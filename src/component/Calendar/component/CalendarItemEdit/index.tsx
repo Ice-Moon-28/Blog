@@ -47,25 +47,31 @@ export const CalendarItemEdit = (props : Props) => {
     }
     const onDeleteCall = () => {
         AxiosInstance.request<{month:string, day:string, schedule:CalendarItem[]}, {month:string, day:string, schedule:CalendarItem[]}>
-        ({url: "/life/calendar/delete", params: {
-            month: month,
-            day: day
-        }}).then(() => {
-            message.success("删除成功")
-        })
+            ({url: "/life/calendar/delete", params: {
+                month: month,
+                day: day
+            }}).then(
+                () => {
+                    message.success("删除成功")
+                },
+                () => {},
+            )
         onDelete?.()
     }
     const onUpdate = () => {
         AxiosInstance.request<{month:string, day:string, schedule:CalendarItem[]}, {month:string, day:string, schedule:CalendarItem[]}>
-        ({url: "/life/calendar/modify",
-            method: "post",
-            data: {
-                month: month,
-                day: day,
-                schedule: dataSource
-            }}).then(() => {
-            message.success("更新成功")
-        })
+            ({url: "/life/calendar/modify",
+                method: "post",
+                data: {
+                    month: month,
+                    day: day,
+                    schedule: dataSource
+            }}).then(
+                () => {
+                    message.success("更新成功")
+                },
+                () => {},
+            )
     }
     useEffect(() => {
         setisVisible(false)
@@ -73,18 +79,20 @@ export const CalendarItemEdit = (props : Props) => {
         { 
             const fetch = async () => {
                 await AxiosInstance.request<{month:string, day:string, schedule:CalendarItem[]}, {month:string, day:string, schedule:CalendarItem[]}>
-                ({url: "/life/calendar/get", params: {
-                    month: month,
-                    day: day
-                }}).then(val => {
-                    if(val)
-                        setDataSource(val.schedule)
-                    else
-                        setDataSource([])
-                    setisVisible(visible || false)
-                    console.log("当前的schedule为", val.schedule)
-                })
-            }
+                    ({url: "/life/calendar/get", params: {
+                        month: month,
+                        day: day
+                    }}).then(
+                        val => {
+                            if(val)
+                                setDataSource(val.schedule)
+                            else
+                                setDataSource([])
+                            setisVisible(visible || false)
+                        },
+                        () => {},
+                    )
+                }
             fetch()
         }
     }, [month, day])

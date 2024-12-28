@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import SyntaxHighlighter, { SyntaxHighlighterProps } from 'react-syntax-highlighter'
 import remarkGfm from 'remark-gfm'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { FourSphereRotate, Icon, Spin } from 'minereactcomponentlibrary'
@@ -10,6 +10,8 @@ import classNames from 'classnames'
 import { Popconfirm } from 'antd'
 // darcula webstorm
 // vscDarkPlus vscode暗色主题
+
+const MySyntaxHighlighter = SyntaxHighlighter as unknown as React.ComponentType<SyntaxHighlighterProps>
 
 type tProps = {
     textContent: string;
@@ -62,7 +64,7 @@ const MarkdownView = (props: tProps) => {
                             const match = /language-(\w+)/.exec(className || '')
                             // eslint-disable-next-line multiline-ternary
                             return !inline && match ? (
-                                <SyntaxHighlighter
+                                <MySyntaxHighlighter 
                                     // 不知道为啥需要连续的两个才能进行成功解析 ?
                                 // eslint-disable-next-line react/no-children-prop
                                     children={String(children).replace(/\r\n/g, '\r\n\r\n').replace(/\n/g, "\n\n")}
@@ -71,7 +73,7 @@ const MarkdownView = (props: tProps) => {
                                     PreTag="div"
                                     // showLineNumbers
                                     {...props}
-                                ></SyntaxHighlighter>
+                                ></MySyntaxHighlighter>
                             ) : (
                                 <code className={className} {...props}>
                                     {children}

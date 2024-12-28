@@ -30,7 +30,6 @@ export  const CalendarItem = (props : CalendarItemProps) => {
                 month: day?.getMonth()! + 1
             }}).then((val) => {
             if(!isRetry) {
-                console.log(val.map(value => value.day), "datasource---")
                 if(val)
                     setDataSource(val.map(value => value.day))
                 else setDataSource([])

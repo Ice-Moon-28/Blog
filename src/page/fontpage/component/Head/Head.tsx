@@ -1,20 +1,21 @@
 import './head.less'
 import { Icon } from 'minereactcomponentlibrary'
 import classNames from 'classnames'
-import { ReactNode, useEffect, useState } from 'react'
+import { forwardRef, ReactNode, useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Name from '../../../../static/picture/name5.png'
 import { GetUrlRelativePath } from '../../../../util/getURL'
 import { QueryDiv } from '../../../../component/QueryDiv'
-type HeadProps = {
+interface HeadProps {
     // 左边显示的导航栏
     HeadNameArray?: ([string, string, string[]] | ReactNode)[];
     // 主题样式
     theme: string;
     // 是否进行显示
     UnAppearUrl?:string[]
-};
-export const Head = (props: HeadProps) => {
+}
+
+export const Head = forwardRef<HTMLDivElement, HeadProps>((props: HeadProps, ref) => {
     const { HeadNameArray, theme, UnAppearUrl = []} = props
     const prefixCls = 'fontpage'
     //  当前激活的ul
@@ -42,7 +43,6 @@ export const Head = (props: HeadProps) => {
                     onMouseOver={
                         value[2]
                             ? () => {
-                                console.log("active--")
                                 setActive(index)
                             }
                             : undefined
@@ -76,8 +76,8 @@ export const Head = (props: HeadProps) => {
         )
     }
     return (
-        <>  
-            {/* 当url处于这些界面的时候 不显示背景的白色 */}
+        <div ref={ref}>
+            {/* if we are not in the UnAppearUrl, we will show the head */}
             {UnAppearUrl.indexOf(GetUrlRelativePath(document.location.toString())) === -1 
             &&
             <div
@@ -109,8 +109,6 @@ export const Head = (props: HeadProps) => {
                     ></img>
                 </div>
             </div>}
-        </>
-      
-    
+        </div>  
     )
-}
+})

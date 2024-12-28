@@ -2,8 +2,7 @@
 import React, {  useEffect, useState } from 'react'
 import { FontPage } from './page/fontpage'
 import { Head } from './page/fontpage/component/Head/Head'
-import moon from './static/svg/moon.svg'
-import sun from './static/svg/sun.svg'
+
 import { BrowserRouter,  Route,  Routes } from 'react-router-dom'
 import { Blog } from './page/blog/all'
 import { NewNote } from './page/note/new/index'
@@ -24,6 +23,8 @@ import { Cube } from './page/live/magic_cube'
 import { CalendarPage } from './page/calendar'
 import { Words } from './page/study/words'
 import { Recite } from './page/study/recite'
+import { Theme, useSetTheme, useThemeAtom } from './state/globalState'
+import { HeadColumn } from './component/HeadColumn/headColumn'
 
 function App() {
     let modelname = 'hijiki'
@@ -94,7 +95,8 @@ function App() {
         AddClickOnHeart()
     }, [])
     //  用来设置夜间模式
-    const [isNight, SetNight] = useState<boolean>(false)
+    const [theme, setTheme] = useThemeAtom()
+
     //  当前的用户权限
     console.log(ForMatSessionStorageIntoString(sessionStorage.getItem("auth")), "权限码")
     const [UserState, SetUserState] = useState<UserAuth>(ForMatSessionStorageIntoString(sessionStorage.getItem("auth")))
@@ -104,18 +106,18 @@ function App() {
                 {/* 不需要权限校验的url */}
                 <Routes>
                     <Route path="/" element={<MyRouteGuard></MyRouteGuard>}>
-                        <Route path="/" element={<FontPage isNight={isNight} />} />
+                        <Route path="/" element={<FontPage isNight={theme === Theme.Night} />} />
                         <Route path="/canvas" element={<Friend></Friend>}></Route>
-                        <Route path="/login" element={<Login SetUserState={SetUserState} theme={isNight?"night":"light"}></Login>}></Route>
+                        <Route path="/login" element={<Login SetUserState={SetUserState} theme={theme}></Login>}></Route>
                     </Route>
                     <Route path="/blog" element={<MyRouteGuard></MyRouteGuard>}>
-                        <Route path="/blog/:id" element={<BlogPre theme={isNight} />} />
-                        <Route path="/blog" element={<Blog theme={isNight} />} />
+                        <Route path="/blog/:id" element={<BlogPre theme={theme === Theme.Night} />} />
+                        <Route path="/blog" element={<Blog theme={theme === Theme.Night} />} />
                         <Route path="/blog/new" element={<MyRouteGuard></MyRouteGuard>}>
                             <Route
                                 path="/blog/new"
                                 element={
-                                    <NewBlog placeholder="编辑你的新博客吧!完成后输入esc" theme={isNight} />
+                                    <NewBlog placeholder="编辑你的新博客吧!完成后输入esc" theme={theme === Theme.Night} />
                                 }
                             />
                         </Route>
@@ -123,7 +125,7 @@ function App() {
                             <Route
                                 path="/blog/modify/:id"
                                 element={
-                                    <ModifyBlog placeholder="编辑你的新博客吧!完成后输入esc" theme={isNight} />
+                                    <ModifyBlog placeholder="编辑你的新博客吧!完成后输入esc" theme={theme === Theme.Night} />
                                 }
                             />
                         </Route>
@@ -131,13 +133,13 @@ function App() {
                     <Route path="/note" element={<MyRouteGuard></MyRouteGuard>}>
                         <Route
                             path="/note"
-                            element={<AllNote theme={isNight ? 'night' : 'light'} />}
+                            element={<AllNote theme={theme}/>}
                         ></Route>
                         <Route path="/note/new" element={<MyRouteGuard></MyRouteGuard>}>
                             <Route
                                 path="/note/new"
                                 element={
-                                    <NewNote placeholder="编辑你的新笔记吧!完成后输入esc" theme={isNight} />
+                                    <NewNote placeholder="编辑你的新笔记吧!完成后输入esc" theme={theme === Theme.Night} />
                                 }
                             />
                         </Route>
@@ -145,24 +147,24 @@ function App() {
                             <Route
                                 path="/note/modify/:id"
                                 element={
-                                    <ModifyNote placeholder="编辑你的笔记吧!完成后输入esc" theme={isNight} />
+                                    <ModifyNote placeholder="编辑你的笔记吧!完成后输入esc" theme={theme === Theme.Night} />
                                 }
                             />
                         </Route>
                     </Route>
                     <Route path="/live" element={<MyRouteGuard></MyRouteGuard>}>
-                        <Route path="/live" element={<Live theme={isNight?"night":"light"} />} />
+                        <Route path="/live" element={<Live theme={theme} />} />
                         <Route path="/live/dream" element={<Dream></Dream>}></Route>
                         <Route
                             path="/live/new"
                             element={
-                                <NewBlog newUrl="/life/newLife" placeholder="编辑你的新博客吧!完成后输入esc" theme={isNight} />
+                                <NewBlog newUrl="/life/newLife" placeholder="编辑你的新博客吧!完成后输入esc" theme={theme === Theme.Night} />
                             }
                         />
                         <Route
                             path="/live/modify/:id"
                             element={
-                                <ModifyBlog placeholder="编辑你的新博客吧!完成后输入esc" theme={isNight} />
+                                <ModifyBlog placeholder="编辑你的新博客吧!完成后输入esc" theme={theme === Theme.Night} />
                             }
                         />
                         <Route 
@@ -183,51 +185,7 @@ function App() {
                 </Routes>
                 <div className="App">
                     {/* 顶部的导航栏 */}
-                    <Head
-                        UnAppearUrl={["/live/dream", "/login", "/canvas", "/study/words/recite"]}
-                        theme={isNight ? 'night' : 'light'}
-                        HeadNameArray={[
-                            ['首页', '/'],
-                            [
-                                '博客',
-                                '/blog',
-                                [
-                                    ['新建', '/blog/new'],
-                                    ['浏览', '/blog']
-                                ]
-                            ],
-                            [
-                                '笔记',
-                                '/note',
-                                [
-                                    ['新建', '/note/new'],
-                                    ['浏览', '/note']
-                                ]
-                            ],
-                            ['生活', '/live', [
-                                ["新建", "live/new"],
-                                ["心愿", "live/dream"],
-                                ["魔方", "live/cube"],
-                                ["日历", "live/calendar"]
-                            ]],
-                            ['动画', '/canvas'],
-                            ['学习', '/study', [
-                                ["单词", "study/words"]
-                            ]
-                            ],
-                            ["登录", "/login"],
-                            ['Github', 'https://github.com/zhanglinghua123'],
-                            <img
-                                key={"img"}
-                                onClick={() => {
-                                    SetNight(!isNight)
-                                }}
-                                src={isNight ? moon : sun}
-                                style={{ width: '14px', height: '14px' }}
-                                alt="moon"
-                            />
-                        ]}
-                    ></Head>
+                    <HeadColumn />
                 </div>
             </AuthMessage.Provider>
         </BrowserRouter>

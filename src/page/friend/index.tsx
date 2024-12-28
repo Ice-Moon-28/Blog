@@ -5,9 +5,13 @@ import { createRoot, Root } from "react-dom/client"
 // import { Drawing } from "../../component/Canvas/YoudaBlog"
 import { getPreFixCls } from "../../util/getPrefixCls"
 import "./index.less"
-import { ShapeShifterCanvas } from "./ShapeShifter"
+// import { ShapeShifterCanvas } from "./ShapeShifter"
 import { YoudaBlog } from "./YoudaBlog"
-let Components = [YoudaBlog, ShapeShifterCanvas]
+let Components = [
+    YoudaBlog
+    // ShapeShifterCanvas,
+]
+
 export const Friend = () => {
     const prefixCls = getPreFixCls("friend")
     const [comicNode, setComicNode] = useState<Root|null>(null)

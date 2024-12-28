@@ -3,6 +3,7 @@ export type AuthItem = {
     url:string,
     auth:string[]
 }
+
 export const AuthConfig:AuthItem[]  = [
     {
         url: "/",

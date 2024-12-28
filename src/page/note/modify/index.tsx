@@ -15,6 +15,7 @@ type NoteMessage = {
     category:string,
     _id:string,
 }
+
 type NoteProps = Partial<{
     // 当完成编写的时候 进行的回调函数
     onComplete: () => void;
@@ -32,6 +33,7 @@ type NoteProps = Partial<{
     initUrl:string
     // esc后的回调函数
 }>;
+
 export const ModifyNote = (props: NoteProps) => {
     const { placeholder, onComplete, theme, src = ""} = props
     // Select value:Category

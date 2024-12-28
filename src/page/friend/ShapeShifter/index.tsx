@@ -294,7 +294,7 @@ class Dot {
     }
     // 
     move (newPosition:Point, avoidStatic?:boolean) {
-        if (!avoidStatic || (avoidStatic && this.distanceTo(newPosition) > 1)) 
+        if (!avoidStatic || (avoidStatic && this.distanceTo(newPosition) as number > 1)) 
             this.nextStatus.push(newPosition)
     }
     // 渲染函数

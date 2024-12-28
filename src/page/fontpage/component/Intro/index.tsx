@@ -3,6 +3,8 @@ import { ReactNode, useState } from 'react'
 import { Envelope } from '../../../../component/Envelope'
 import { getPreFixCls } from '../../../../util/getPrefixCls'
 import './index.less'
+import { useTranslation } from 'react-i18next'
+
 type IntroProp = Partial<{
     portrait: ReactNode;
     UserName: string;
@@ -13,6 +15,9 @@ type IntroProp = Partial<{
 export const Intro = (props: IntroProp) => {
     const { portrait, iconArray, statistics, UserName } = props
     const prefixCls = getPreFixCls('intro')
+
+    const { t } = useTranslation()
+
     // 控制信封显示的变量
     const [envelopeVisible, setEnvelopeVisible] = useState<boolean>(false)
     return (
@@ -33,7 +38,7 @@ export const Intro = (props: IntroProp) => {
                 })}
             </div>
             <Button type={'text'} className={`${prefixCls}-button`} size="middle" onClick={() => setEnvelopeVisible((val) => !val)}>
-                点击留言~
+                {t("intro_click")}                
             </Button>
             {
                 envelopeVisible && <Envelope size={30} left={"35vw"} bottom={"5vh"}></Envelope>
@@ -41,7 +46,7 @@ export const Intro = (props: IntroProp) => {
             <div className={`${prefixCls}-icon-array`}>
                 {iconArray?.map(value => {
                     if (typeof value === 'string') 
-                        return <Icon src={value}></Icon>
+                        return <Icon src={value} key={value}></Icon>
                     else 
                         return value
                     

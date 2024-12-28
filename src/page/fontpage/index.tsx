@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import classNames from 'classnames'
-import { useEffect,  useRef, useState } from 'react'
+import { useEffect,  useMemo,  useRef, useState } from 'react'
 import { Card, CardProps } from '../../component/MyCard/Card'
 import { Intro } from './component/Intro'
 import './style/index.less'
@@ -12,6 +12,7 @@ import { Spin, FourSphereRotate, Icon } from 'minereactcomponentlibrary'
 import { notification } from 'antd'
 import { NotifyAliPay, NotifyGithub, NotifyQQ, NotifyWeChat} from './component/Notification'
 import { TurnPicture } from '../../component/TurnPicture'
+import { useTranslation } from 'react-i18next'
 type UserMessage = {
     blog:number,
     note:number,
@@ -28,11 +29,17 @@ export const FontPage = (props: { isNight: boolean }) => {
     const prefixCls = 'fontpage'
     // 博客信息存储的地方
     const [CardArray, SetCardArray] = useState<CardProps[]>([])
+
+    const { t } = useTranslation()
+
     //  显示的句子数据
-    const [HeadSentence] = useState<[string, string]>([
-        '记 录 ,生 命 中 的 美 好',
-        "Don't Cry,do laugh"
-    ])
+    const HeadSentence = useMemo<[string, string]>(() => (
+        [
+            t("fontpage_title"),
+            t("fontpage_sub_title"),
+        ]
+    ), [t]) 
+
     // 用户的介绍信息
     const [userMessage, setUserMessage] = useState<UserMessage>()
     // 用户简介的Notify
@@ -144,14 +151,14 @@ export const FontPage = (props: { isNight: boolean }) => {
                     <Intro
                         portrait={<img src={Image}></img>}
                         hoverColor={'#61dafb'}
-                        UserName="冰月二八"
+                        UserName={t('manager_name')}
                         iconArray={[<Icon src="githubfill" onClick={() => NotifyGithub({link: userMessage?.Github || ""})}></Icon>, 
                             <Icon src='QQcirclefill' onClick={() => NotifyQQ({placement: "bottomLeft", msg: `QQ号: ${userMessage?.QQ}`})}></Icon>, 
                             <Icon src='wechatfill' onClick={() => NotifyWeChat({placement: "bottomLeft", msg: `微信号: ${userMessage?.Wechat}`})}></Icon>, 
                             <Icon src='alipaycirclefill' onClick={() => NotifyAliPay({placement: "bottomLeft", src: userMessage?.AliPay||""})}></Icon>]}
                         statistics={[
-                            ['博客', (userMessage?.blog || 0).toString()],
-                            ['笔记', (userMessage?.note || 0).toString()]
+                            [t('blog'), (userMessage?.blog || 0).toString()],
+                            [t('note'), (userMessage?.note || 0).toString()]
                         ]}
                     ></Intro>
                     <TurnPicture
@@ -168,18 +175,18 @@ export const FontPage = (props: { isNight: boolean }) => {
                         itemArray={[
                             {
                                 backImg: ImgArray[2],
-                                Title: "笔记",
-                                Text: "记录学习的一脚一步"
+                                Title: t("note"),
+                                Text: t("carousel_title1")
                             },
                             {
                                 backImg: ImgArray[4],
-                                Title: "博客",
-                                Text: "记录生活的思考"
+                                Title: t("blog"),
+                                Text: t("carousel_title2")
                             },
                             {
                                 backImg: ImgArray[5],
-                                Title: "求职",
-                                Text: "坐等收感谢信 ^_^ 这形势可真几把操蛋"
+                                Title: t("job_search"),
+                                Text: t("carousel_title3")
                             }
                         ]}></TurnPicture>
                 </div>
