@@ -4,7 +4,7 @@ const AxiosInstance =  axios.create({
     // 基础的url
     // baseURL: "http://124.220.201.171:9205",
     // baseURL: "http://101.35.56.56:9205/",
-    baseURL: "http://127.0.0.1:9205",
+    baseURL: "http://34.69.96.168:9205",
     // 超时配置
     timeout: 30000,
     headers: {

@@ -52,7 +52,7 @@ export const HeadColumn = () => {
                 //     ]
                 // ],
                 [t('login'), "/login"],
-                ['Github', 'https://github.com/zhanglinghua123'],
+                ['Github', 'https://github.com/Ice-Moon-28'],
                 <PerferenceCenter key={"PerferenceCenter"} />,
                 <img
                     key={"img"}
