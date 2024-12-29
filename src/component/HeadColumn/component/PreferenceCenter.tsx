@@ -64,9 +64,18 @@ export const PerferenceCenter = () => {
 
     const dropDownOverlap = useMemo(() => {
         return (
-            <PerferenceCerterDropdown>
-                <PerferenceCerterAvator src={Language}></PerferenceCerterAvator>
-            </PerferenceCerterDropdown>
+            <div
+              style={{
+                display: "flex",
+                color: "var(--color, black)",
+                fontSize: 14,
+                margin: "10px 18px",
+                position: "relative",
+                top: 1,
+              }}
+            >
+                <PerferenceCerterAvator style={{ width: 18, height: 18 }} src={Language}></PerferenceCerterAvator>
+            </div>
         )
     }, [])
     
