@@ -1,7 +1,7 @@
 version: "3"
 services:
   serve:
-    image: "server:1"
+    image: "server"
     container_name: "blog_front_server"
     restart: "always"
     volumes:
